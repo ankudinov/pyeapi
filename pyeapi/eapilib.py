@@ -648,6 +648,7 @@ class EapiConnection(object):
                             commands.append(rcf)
                             commands.extend(other_cmds)
                             break
+            print(commands)
             request = self.request(commands, encoding=encoding, **kwargs)
             response = self.send(request)
             return response
