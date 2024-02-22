@@ -642,13 +642,12 @@ class EapiConnection(object):
                                     if 'EOF' in current_cmd:
                                         code_cmds_ready = True
                                     else:
-                                        code_cmds_string += r'\n'
+                                        code_cmds_string += '\n'
                             
                             rcf = "{'cmd': " + code + ", 'input': " + code_cmds_string + "}"
                             commands.append(rcf)
                             commands.extend(other_cmds)
                             break
-            print(commands)
             request = self.request(commands, encoding=encoding, **kwargs)
             response = self.send(request)
             return response
