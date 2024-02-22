@@ -625,6 +625,29 @@ class EapiConnection(object):
 
         try:
             self.error = None
+            for i, cmd in enumerate(commands):
+                if 'router general' in cmd:
+                    if 'control-functions' in commands[i+1]:
+                        if 'code' in commands[i+2]:
+                            code = commands.pop(i+2)
+                            code_cmds_string = r''
+                            code_cmds_ready = False
+                            other_cmds = list()
+                            while commands[i+2:]:
+                                current_cmd = commands.pop(i+2)
+                                if code_cmds_ready:
+                                    other_cmds.append(current_cmd)
+                                else:
+                                    code_cmds_string += current_cmd
+                                    if 'EOF' in current_cmd:
+                                        code_cmds_ready = True
+                                    else:
+                                        code_cmds_string += r'\n'
+                            
+                            rcf = "{'cmd': " + code + ", 'input': " + code_cmds_string + "}"
+                            commands.append(rcf)
+                            commands.extend(other_cmds)
+                            break
             request = self.request(commands, encoding=encoding, **kwargs)
             response = self.send(request)
             return response
