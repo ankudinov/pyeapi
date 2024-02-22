@@ -644,7 +644,7 @@ class EapiConnection(object):
                                     else:
                                         code_cmds_string += '\n'
                             
-                            rcf = "{'cmd': '" + code + "', 'input': '" + code_cmds_string + "'}"
+                            rcf = {'cmd': code, 'input': code_cmds_string}
                             commands.append(rcf)
                             commands.extend(other_cmds)
                             break
